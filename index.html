@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Retro'98 Study Desk</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div class="desktop">
+    <header class="desktop__header">
+      <h1>Retro'98 Study Desk</h1>
+      <p>Stay organized with a nostalgic study companion.</p>
+    </header>
+
+    <main class="desktop__main">
+      <section class="window window--todo" aria-label="To-do list window">
+        <div class="title-bar">
+          <div class="title-bar__title">Study Planner</div>
+          <div class="title-bar__buttons" aria-hidden="true">
+            <span class="title-bar__btn">_</span>
+            <span class="title-bar__btn">□</span>
+            <span class="title-bar__btn">×</span>
+          </div>
+        </div>
+        <div class="window__content">
+          <form class="todo-form" aria-label="Add a study task">
+            <label for="todo-input">Add Task</label>
+            <div class="todo-form__row">
+              <input id="todo-input" type="text" name="task" placeholder="Write the next mission…" required />
+              <button type="submit" class="btn">Add</button>
+            </div>
+          </form>
+          <ul class="todo-list" aria-live="polite"></ul>
+        </div>
+      </section>
+
+      <section class="window window--timer" aria-label="Timer window">
+        <div class="title-bar">
+          <div class="title-bar__title">Pomodoro Timer</div>
+          <div class="title-bar__buttons" aria-hidden="true">
+            <span class="title-bar__btn">_</span>
+            <span class="title-bar__btn">□</span>
+            <span class="title-bar__btn">×</span>
+          </div>
+        </div>
+        <div class="window__content">
+          <div class="timer-display" role="timer" aria-live="assertive">25:00</div>
+          <div class="timer-controls">
+            <button class="btn" data-action="start">Start</button>
+            <button class="btn" data-action="pause">Pause</button>
+            <button class="btn" data-action="reset">Reset</button>
+          </div>
+          <div class="session-select">
+            <label for="session-length">Session Length</label>
+            <select id="session-length">
+              <option value="15">15 minutes - Quick Sprint</option>
+              <option value="25" selected>25 minutes - Classic Focus</option>
+              <option value="45">45 minutes - Deep Dive</option>
+            </select>
+          </div>
+          <div class="timer-progress" aria-hidden="true">
+            <div class="timer-progress__bar"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="window window--notes" aria-label="Notes window">
+        <div class="title-bar">
+          <div class="title-bar__title">Sticky Notes</div>
+          <div class="title-bar__buttons" aria-hidden="true">
+            <span class="title-bar__btn">_</span>
+            <span class="title-bar__btn">□</span>
+            <span class="title-bar__btn">×</span>
+          </div>
+        </div>
+        <div class="window__content">
+          <textarea id="notes" placeholder="Type your study nuggets here..."></textarea>
+          <div class="notes-footer">
+            <button class="btn" id="save-notes">Save Notes</button>
+            <span class="notes-status" role="status" aria-live="polite"></span>
+          </div>
+        </div>
+      </section>
+
+      <section class="window window--quotes" aria-label="Motivation window">
+        <div class="title-bar">
+          <div class="title-bar__title">Motivation.exe</div>
+          <div class="title-bar__buttons" aria-hidden="true">
+            <span class="title-bar__btn">_</span>
+            <span class="title-bar__btn">□</span>
+            <span class="title-bar__btn">×</span>
+          </div>
+        </div>
+        <div class="window__content">
+          <p class="quote-text"></p>
+          <button class="btn" id="new-quote">Inspire Me</button>
+        </div>
+      </section>
+    </main>
+
+    <footer class="taskbar" aria-label="Taskbar">
+      <button class="start-btn" aria-label="Open start menu">
+        <span class="start-btn__icon">🪟</span>
+        Start
+      </button>
+      <div class="taskbar__clock" aria-live="polite"></div>
+    </footer>
+  </div>
+
+  <script src="script.js" defer></script>
+</body>
+</html>
