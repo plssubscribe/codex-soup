@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}Add design – Design Library{% endblock %}
+
+{% block content %}
+<nav class="breadcrumbs">
+  <a href="{{ url_for('index') }}">Designs</a>
+  <span aria-hidden="true">/</span>
+  <span>New design</span>
+</nav>
+<section class="panel">
+  <h1>Add a new design</h1>
+  <p class="muted">
+    Capture the essentials, drop in the geometry, and you are ready to browse from the dashboard.
+  </p>
+  <form class="stacked-form" action="{{ url_for('create_design') }}" method="post" enctype="multipart/form-data">
+    <label class="field-group">
+      <span>Name</span>
+      <input type="text" name="name" required placeholder="E.g. Parametric gear" />
+    </label>
+    <label class="field-group">
+      <span>Description</span>
+      <textarea name="description" rows="4" placeholder="What makes this design special?"></textarea>
+    </label>
+    <div class="form-grid">
+      <label class="field-group">
+        <span>Version</span>
+        <input type="text" name="version" value="1.0" />
+      </label>
+      <label class="field-group">
+        <span>File format</span>
+        <input type="text" name="file_format" placeholder="stl" />
+      </label>
+    </div>
+    <label class="field-group">
+      <span>Tags (comma separated)</span>
+      <input type="text" name="tags" placeholder="gear, mechanical, printable" />
+    </label>
+    <label class="field-group">
+      <span>Categories (comma separated)</span>
+      <input type="text" name="categories" placeholder="engineering, robotics" />
+    </label>
+    <label class="field-group">
+      <span>Custom attributes (one per line, <code>key: value</code>)</span>
+      <textarea name="custom_attributes" rows="4" placeholder="Torque rating: 45Nm"></textarea>
+    </label>
+    <label class="field-group">
+      <span>Upload 3D file</span>
+      <input type="file" name="design_file" />
+    </label>
+    <div class="actions">
+      <button type="submit" class="btn primary">Create design</button>
+      <a class="btn ghost" href="{{ url_for('index') }}">Cancel</a>
+    </div>
+  </form>
+</section>
+{% endblock %}

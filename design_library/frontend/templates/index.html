@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block title %}Design Library – Dashboard{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <h1>Stay on top of every design.</h1>
+  <p class="hero-subtitle">
+    Search, filter, and curate your mechanical parts, architectural concepts, or art experiments—all in one friendly view.
+  </p>
+</section>
+<section class="search-panel">
+  <form method="get" class="search-form">
+    <div class="field-group">
+      <label for="q">Keyword</label>
+      <input type="text" id="q" name="q" placeholder="Gear, drone frame, pavilion..." value="{{ query }}" />
+    </div>
+    <div class="field-group">
+      <label for="tags">Tags</label>
+      <input type="text" id="tags" name="tags" placeholder="comma separated" value="{{ tags }}" />
+    </div>
+    <div class="field-group">
+      <label for="categories">Categories</label>
+      <input type="text" id="categories" name="categories" placeholder="comma separated" value="{{ categories }}" />
+    </div>
+    <div class="field-group">
+      <label for="formats">Formats</label>
+      <input type="text" id="formats" name="formats" placeholder="stl, obj, step" value="{{ file_formats }}" />
+    </div>
+    <div class="actions">
+      <button type="submit" class="btn primary">Search</button>
+      <a class="btn ghost" href="{{ url_for('index') }}">Clear</a>
+      <a class="btn" href="{{ url_for('create_design') }}">Add new design</a>
+    </div>
+  </form>
+</section>
+<section class="design-grid">
+  {% if designs %}
+    <h2 class="section-title">
+      {{ designs|length }} design{% if designs|length != 1 %}s{% endif %} found
+    </h2>
+    <div class="grid">
+      {% for design in designs %}
+        <article class="design-card">
+          <header class="design-card-header">
+            <h3><a href="{{ design.detail_url }}">{{ design.name }}</a></h3>
+            <span class="pill">v{{ design.version }}</span>
+          </header>
+          <p class="design-description">{{ design.description }}</p>
+          <ul class="meta">
+            <li><strong>Updated</strong> {{ design.updated_at_human }}</li>
+            <li><strong>Format</strong> {{ design.file_format or "—" }}</li>
+          </ul>
+          {% if design.tags %}
+            <ul class="tags">
+              {% for tag in design.tags %}
+                <li>{{ tag }}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+          <div class="card-actions">
+            <a class="btn small" href="{{ design.detail_url }}">Open</a>
+            {% if design.download_url %}
+              <a class="btn small ghost" href="{{ design.download_url }}">Download</a>
+            {% endif %}
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="empty-state">
+      <h2>No designs yet.</h2>
+      <p>
+        {% if search_performed %}
+          Try broadening your filters or clearing them entirely.
+        {% else %}
+          Start by adding your first design with the button above.
+        {% endif %}
+      </p>
+    </div>
+  {% endif %}
+</section>
+{% endblock %}
