@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+
+{% block title %}{{ design.name }} – Design Library{% endblock %}
+
+{% block content %}
+<nav class="breadcrumbs">
+  <a href="{{ url_for('index') }}">Designs</a>
+  <span aria-hidden="true">/</span>
+  <span>{{ design.name }}</span>
+</nav>
+<section class="design-overview">
+  <div class="overview-main">
+    <h1>{{ design.name }}</h1>
+    <p class="design-description">{{ design.description }}</p>
+    <div class="quick-meta">
+      <span class="pill">v{{ design.version }}</span>
+      <span class="muted">Updated {{ design.updated_at_human }}</span>
+      <span class="muted">Created {{ design.created_at_human }}</span>
+    </div>
+    {% if design.tags %}
+      <div class="badge-group">
+        {% for tag in design.tags %}
+          <span class="badge">{{ tag }}</span>
+        {% endfor %}
+      </div>
+    {% endif %}
+    {% if design.categories %}
+      <div class="badge-group categories">
+        {% for category in design.categories %}
+          <span class="badge alt">{{ category }}</span>
+        {% endfor %}
+      </div>
+    {% endif %}
+    <div class="file-actions">
+      <div>
+        <strong>File format:</strong> {{ design.file_format or "—" }}
+      </div>
+      {% if design.download_url %}
+        <a class="btn" href="{{ design.download_url }}">Download file</a>
+      {% endif %}
+      <a class="btn ghost" href="{{ url_for('export_design', identifier=design.identifier) }}">Export bundle</a>
+    </div>
+  </div>
+  <aside class="overview-secondary">
+    <h2>Previews</h2>
+    {% if design.preview_urls %}
+      <div class="preview-grid">
+        {% for preview in design.preview_urls %}
+          <a href="{{ preview }}" target="_blank" rel="noopener" class="preview-item">
+            <img src="{{ preview }}" alt="Preview image for {{ design.name }}" />
+          </a>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="muted">No preview images uploaded yet.</p>
+    {% endif %}
+    <form class="stacked-form" action="{{ url_for('upload_preview', identifier=design.identifier) }}" method="post" enctype="multipart/form-data">
+      <label class="field-group">
+        <span>Upload new preview</span>
+        <input type="file" name="preview_image" accept="image/*" required />
+      </label>
+      <button type="submit" class="btn small">Upload</button>
+    </form>
+  </aside>
+</section>
+<section class="panel">
+  <h2>Update metadata</h2>
+  <form class="stacked-form" action="{{ url_for('update_design', identifier=design.identifier) }}" method="post">
+    <label class="field-group">
+      <span>Name</span>
+      <input type="text" name="name" value="{{ design.name }}" required />
+    </label>
+    <label class="field-group">
+      <span>Description</span>
+      <textarea name="description" rows="4">{{ design.description }}</textarea>
+    </label>
+    <div class="form-grid">
+      <label class="field-group">
+        <span>Version</span>
+        <input type="text" name="version" value="{{ design.version }}" />
+      </label>
+      <label class="field-group">
+        <span>File format</span>
+        <input type="text" name="file_format" value="{{ design.file_format }}" />
+      </label>
+    </div>
+    <label class="field-group">
+      <span>Tags (comma separated)</span>
+      <input type="text" name="tags" value="{{ design.tags | join(', ') }}" />
+    </label>
+    <label class="field-group">
+      <span>Categories (comma separated)</span>
+      <input type="text" name="categories" value="{{ design.categories | join(', ') }}" />
+    </label>
+    <label class="field-group">
+      <span>Custom attributes (one per line, <code>key: value</code>)</span>
+      <textarea name="custom_attributes" rows="4">{% for key, value in design.custom_attributes.items() %}{{ key }}: {{ value }}{% if not loop.last %}
+{% endif %}{% endfor %}</textarea>
+    </label>
+    <div class="actions">
+      <button type="submit" class="btn primary">Save changes</button>
+    </div>
+  </form>
+</section>
+<section class="panel">
+  <h2>Replace design file</h2>
+  <form class="stacked-form" action="{{ url_for('replace_file', identifier=design.identifier) }}" method="post" enctype="multipart/form-data">
+    <label class="field-group">
+      <span>New geometry file</span>
+      <input type="file" name="design_file" required />
+    </label>
+    <button type="submit" class="btn">Upload replacement</button>
+  </form>
+</section>
+<section class="panel danger-zone">
+  <h2>Danger zone</h2>
+  <form action="{{ url_for('delete_design', identifier=design.identifier) }}" method="post">
+    <p>Deleting removes the metadata, files, and previews from storage. This action cannot be undone.</p>
+    <button type="submit" class="btn danger">Delete design</button>
+  </form>
+</section>
+{% endblock %}

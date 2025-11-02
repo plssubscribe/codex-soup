@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}Design Library{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header class="app-header">
+      <div class="app-shell">
+        <a href="{{ url_for('index') }}" class="brand">Design Library</a>
+        <nav class="app-nav">
+          <a class="nav-link" href="{{ url_for('create_design') }}">Add design</a>
+          <a class="nav-link" href="{{ url_for('index') }}">Browse</a>
+        </nav>
+      </div>
+    </header>
+    <main class="app-shell">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <ul class="flash-messages">
+            {% for category, message in messages %}
+              <li class="flash flash-{{ category }}">{{ message }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      {% endwith %}
+      {% block content %}{% endblock %}
+    </main>
+    <footer class="app-footer">
+      <div class="app-shell">
+        Crafted for exploring and organising intricate 3D assets with ease.
+      </div>
+    </footer>
+  </body>
+</html>
